@@ -1,0 +1,917 @@
+@charset "UTF-8";
+/*
+ * 4 March 2022
+ * CSS Knob widget with Range Slider
+ * Inspired by Ana Tudor's 1 element range slider collection
+ *
+ * ✔ responsive
+ * ✔ only 1 line of HTML
+ * ✔ drag + keyboard accessible
+ * ✔ UI created with CSS gradients & SASS generators
+ * ✔ highly customizable with CSS & SASS variables
+ * ✔ powered by 9* lines of JavaScript
+ *
+ * Tested on the latest versions of Chrome & Firefox
+ * Open it in the details view for more information
+ *
+ */
+@keyframes appear {
+  to {
+    visibility: visible;
+  }
+}
+.knob {
+  font-size: 0.152vmin;
+  --full-angle: 250;
+  --start-angle: 55;
+  --size: 533;
+  --knob-size: 300;
+  --knob-tip-size: 9%;
+  --knob-pseudo-size: 100;
+  --knob-border-width: 1.6%;
+  --knob-scale: calc(var(--knob-size) / var(--knob-pseudo-size));
+  --calc-size: calc(var(--size) * 1em);
+  --calc-knob-size: calc(var(--size) * (var(--knob-size) / 100) * 1em);
+  --mapped: calc(
+  	(var(--value) - var(--min, 0)) / (var(--max, 100) - var(--min, 0))
+  );
+  --current-angle: calc(var(--full-angle, 360) * var(--mapped, 0) * 1deg);
+  --calc-size-diff: calc(var(--size) - var(--knob-pseudo-size));
+  --center: calc(var(--calc-size-diff) * 0.5em);
+  --translate: calc(
+  	(var(--calc-size-diff) * var(--mapped, 0) * -1em) + var(--center)
+  );
+  --cur-drag: grab;
+  --cur-dragging: grabbing;
+  width: var(--calc-size);
+  height: var(--calc-size);
+  overflow: auto;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 533 533' width='533px' height='533px' xmlns='http://www.w3.org/2000/svg'%3E%3CforeignObject width='100%25' height='100%25'%3E%3Cdiv class='c-o' xmlns='http://www.w3.org/1999/xhtml'%3E%3Cdiv class='c-i'%3E%3C/div%3E%3C/div%3E%3Cstyle%3E.c-o,.c-i{position:absolute;left:0;top:0;right:0;bottom:0}.c-i::before{--s:300px;content:\"\";position:absolute;left:50%25;top:50%25;transform:translate(-50%25,-50%25);width:calc(var(--s) - 2px);height:calc(var(--s) - 2px);border-radius:50%25;box-shadow:0 56px 70px 8px rgba(0,0,0,0.45),0 -50px 45px 26px rgba(255,255,255,0.6)}%3C/style%3E%3C/foreignObject%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg viewBox='0 0 5260 5260' width='5260px' height='5260px' xmlns='http://www.w3.org/2000/svg'%3E%3CforeignObject width='100%25' height='100%25'%3E%3Cdiv class='c-o' xmlns='http://www.w3.org/1999/xhtml'%3E<div class=\"c-i\" style=\"--n:10\"><div class='s' style='--i:0'><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:1'><div class='d d1'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:2'><div class='d d2'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:3'><div class='d d3'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:4'><div class='d d4'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:5'><div class='d d5'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:6'><div class='d d6'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:7'><div class='d d7'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:8'><div class='d d8'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:9'><div class='d d9'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div><div class='s' style='--i:10'><div class='d d1'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><div class='d d0'><div class='a'></div><div class='b e'></div><div class='b c'></div></div><text class='percentText'>%</text></div></div>%3C/div%3E%3Cstyle%3E.c-o,.c-i{position:absolute;left:0;top:0;right:0;bottom:0}.s{--as:55;--ae:-0.6;--angle:calc(((250 - (var(--ae) * 2)) / var(--n)) * var(--i) * 1deg);position:absolute;left:50%25;top:50%25;transform:translate(-50%25, -50%25) rotate(90deg)rotate(calc((var(--as) + var(--ae)) * 1deg)) rotate(var(--angle))translateX(calc(\a 		5260 * (45.03726 / 100) * 1px\a 	)) rotate(-90deg)rotate(calc((var(--as) + var(--ae)) * -1deg))rotate(calc(var(--angle) * -1));}.d{--s:130px;--pt:polygon(9.2%25 0, 89.8%25 0, 68.2%25 13%25, 31.8%25 13%25);--ps:polygon(26%25 33%25, 26%25 76%25, -0.4%25 98.4%25, 0 94%25, 0 1.6%25);--pc:polygon(26.6%25 0, 73.4%25 0, 92%25 50%25, 73.4%25 100%25, 26.6%25 100%25, 8%25 50%25);--m:0;color:rgba(40,40,40,0.859);position:relative;width:var(--s);height:calc(var(--s) * 1.5831818182);display:inline-block}.d,.d div{border-radius:calc(var(--s) * 0.1066);overflow:hidden}.d::before,.d::after{content:\"\";clip-path:var(--pt)}.d::before,.d::after,.d div,.d div::before,.d div::after{position:absolute;left:0;top:0;width:100%25;height:100%25;display:block}.d::before,.d::after,.d .a,.d div::before,.d div::after{background:currentColor}.d .a{top:50%25;height:13%25;transform:translateY(-50%25);clip-path:var(--pc)}.d .b {height:50%25}.d .b::before,.d .b::after{content: \"\";clip-path: var(--ps)}.d .b::after{transform:rotateY(180deg)}.d .c,.d::after{transform:rotateX(180deg)}.d .c{transform-origin:0 100%25}.d::before{opacity:var(--A,1)}.e::after{opacity:var(--B,1)}.c::after{opacity:var(--C,1)}.d::after{opacity:var(--D,1)}.c::before{opacity:var(--E,1)}.e::before{opacity:var(--F,1)}.a{opacity:var(--G, 1)}.d0{--G:var(--m)}.d1{--m:0;--A:var(--m);--D:var(--m);--E:var(--m);--F:var(--m);--G:var(--m);margin-left:calc(var(--s) * -0.742)}.d2,.d3,.d7{--F:var(--m)}.d3,.d4,.d5,.d7,.d9{--E:var(--m)}.d2{--C:var(--m)}.d4{--A:var(--m);--D:var(--m)}.d5,.d6{--B: var(--m)}.d7{--D:var(--m);--G:var(--m)}.s > .d:not(:last-of-type){margin-right:calc(var(--s) * 0.16)}.percentText{color: dark-grey; font-family: Arial; font-size: 250px;}%3C/style%3E%3C/foreignObject%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg viewBox='0 0 520 520' width='520px' height='520px' xmlns='http://www.w3.org/2000/svg'%3E%3CforeignObject width='100%25' height='100%25'%3E%3Cdiv class='c-o' xmlns='http://www.w3.org/1999/xhtml'%3E%3Cdiv class='c-i'%3E%3C/div%3E%3C/div%3E%3Cstyle%3E.c-o,.c-i{position:absolute;left:0;top:0;right:0;bottom:0}.c-i{color: rgba(40,40,40,1);--diameter:10px;--offset-bottom:13%25;--offset-bottom-text:12.5%25;--offset-center:18.78%25;--offset-center-text:18.28%25;background-image:radial-gradient(circle at center,currentColor calc((var(--diameter) * 0.5) - 1px),transparent calc(var(--diameter) * 0.5)),radial-gradient(circle at center,currentColor calc((var(--diameter) * 0.5) - 1px),transparent calc(var(--diameter) * 0.5));background-position:left calc(50%25 + var(--offset-center)) bottom var(--offset-bottom),left calc(50%25 - var(--offset-center)) bottom var(--offset-bottom);background-size:var(--diameter) var(--diameter);background-repeat:no-repeat;opacity:0.9;}.c-i::before,.c-i::after{position:absolute;left:calc(50%25 + (var(--sgn, 1) * var(--offset-center-text)));bottom:var(--offset-bottom-text);transform:translate(-50%25,100%25);font-size:18.2px;font-family:Arial, Helvetica, sans-serif;font-weight:bold;text-transform:uppercase;}.c-i::before{--sgn:-1;content:'min'}.c-i::after {content:'max'}%3C/style%3E%3C/foreignObject%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg viewBox='0 0 5260 5260' width='5260px' height='5260px' xmlns='http://www.w3.org/2000/svg'%3E%3CforeignObject width='100%25' height='100%25'%3E%3Cdiv class='c-o' xmlns='http://www.w3.org/1999/xhtml'%3E<div class=\"c-i\" style=\"--n:100\"><div class='tick' style='--i:0'></div><div class='tick' style='--i:1'></div><div class='tick' style='--i:2'></div><div class='tick' style='--i:3'></div><div class='tick' style='--i:4'></div><div class='tick' style='--i:5'></div><div class='tick' style='--i:6'></div><div class='tick' style='--i:7'></div><div class='tick' style='--i:8'></div><div class='tick' style='--i:9'></div><div class='tick' style='--i:10'></div><div class='tick' style='--i:11'></div><div class='tick' style='--i:12'></div><div class='tick' style='--i:13'></div><div class='tick' style='--i:14'></div><div class='tick' style='--i:15'></div><div class='tick' style='--i:16'></div><div class='tick' style='--i:17'></div><div class='tick' style='--i:18'></div><div class='tick' style='--i:19'></div><div class='tick' style='--i:20'></div><div class='tick' style='--i:21'></div><div class='tick' style='--i:22'></div><div class='tick' style='--i:23'></div><div class='tick' style='--i:24'></div><div class='tick' style='--i:25'></div><div class='tick' style='--i:26'></div><div class='tick' style='--i:27'></div><div class='tick' style='--i:28'></div><div class='tick' style='--i:29'></div><div class='tick' style='--i:30'></div><div class='tick' style='--i:31'></div><div class='tick' style='--i:32'></div><div class='tick' style='--i:33'></div><div class='tick' style='--i:34'></div><div class='tick' style='--i:35'></div><div class='tick' style='--i:36'></div><div class='tick' style='--i:37'></div><div class='tick' style='--i:38'></div><div class='tick' style='--i:39'></div><div class='tick' style='--i:40'></div><div class='tick' style='--i:41'></div><div class='tick' style='--i:42'></div><div class='tick' style='--i:43'></div><div class='tick' style='--i:44'></div><div class='tick' style='--i:45'></div><div class='tick' style='--i:46'></div><div class='tick' style='--i:47'></div><div class='tick' style='--i:48'></div><div class='tick' style='--i:49'></div><div class='tick' style='--i:50'></div><div class='tick' style='--i:51'></div><div class='tick' style='--i:52'></div><div class='tick' style='--i:53'></div><div class='tick' style='--i:54'></div><div class='tick' style='--i:55'></div><div class='tick' style='--i:56'></div><div class='tick' style='--i:57'></div><div class='tick' style='--i:58'></div><div class='tick' style='--i:59'></div><div class='tick' style='--i:60'></div><div class='tick' style='--i:61'></div><div class='tick' style='--i:62'></div><div class='tick' style='--i:63'></div><div class='tick' style='--i:64'></div><div class='tick' style='--i:65'></div><div class='tick' style='--i:66'></div><div class='tick' style='--i:67'></div><div class='tick' style='--i:68'></div><div class='tick' style='--i:69'></div><div class='tick' style='--i:70'></div><div class='tick' style='--i:71'></div><div class='tick' style='--i:72'></div><div class='tick' style='--i:73'></div><div class='tick' style='--i:74'></div><div class='tick' style='--i:75'></div><div class='tick' style='--i:76'></div><div class='tick' style='--i:77'></div><div class='tick' style='--i:78'></div><div class='tick' style='--i:79'></div><div class='tick' style='--i:80'></div><div class='tick' style='--i:81'></div><div class='tick' style='--i:82'></div><div class='tick' style='--i:83'></div><div class='tick' style='--i:84'></div><div class='tick' style='--i:85'></div><div class='tick' style='--i:86'></div><div class='tick' style='--i:87'></div><div class='tick' style='--i:88'></div><div class='tick' style='--i:89'></div><div class='tick' style='--i:90'></div><div class='tick' style='--i:91'></div><div class='tick' style='--i:92'></div><div class='tick' style='--i:93'></div><div class='tick' style='--i:94'></div><div class='tick' style='--i:95'></div><div class='tick' style='--i:96'></div><div class='tick' style='--i:97'></div><div class='tick' style='--i:98'></div><div class='tick' style='--i:99'></div><div class='tick' style='--i:100'></div></div>%3C/div%3E%3Cstyle%3E.c-o,.c-i{position:absolute;left:0;top:0;right:0;bottom:0}.tick{--angle:calc((250 / var(--n)) * var(--i) * 1deg);position:absolute;left:50%25;top:50%25;width:80px;height:30px;background:rgba(161,161,161,1);border-radius:100px;transform:translate(-50%25,-50%25) rotate(90deg) rotate(55deg) rotate(var(--angle)) translateX(calc(\a 		5260 * (38.5931 / 100) * 1px\a 	)) translate(50%25);opacity:0.73}.tick:nth-child(10n + 1){background:rgba(88,86,86,1);width:100px;opacity:0.83}%3C/style%3E%3C/foreignObject%3E%3C/svg%3E");
+  background-position: 0 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  visibility: hidden;
+  animation: appear steps(2) 20ms calc(var(--drag-duration) * 2) forwards;
+  --outline-color: rgba(0, 100, 200, 0.5);
+  --outline-width: 3em;
+  --drag-duration: 500ms;
+  --drag-timing-func: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  --knob-shadow: rgba(0, 0, 0, 0.6);
+  --knob-face-gradient: linear-gradient(#f1f1f1, #fff);
+  --knob-border-gradient: linear-gradient(#fff 34%, #d1d1d1);
+}
+.knob, .knob::-webkit-slider-runnable-track, .knob::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+}
+.knob::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 100%;
+}
+.knob, .knob::-webkit-slider-runnable-track {
+  pointer-events: none;
+}
+.knob, .knob::-moz-range-track, .knob::-moz-range-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  position: relative;
+  border: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+.knob::-moz-range-progress {
+  -moz-appearance: none;
+       appearance: none;
+  display: none;
+}
+.knob::-moz-range-track {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.knob::-webkit-slider-thumb {
+  width: calc(var(--knob-pseudo-size) * 1em);
+  height: calc(var(--knob-pseudo-size) * 1em);
+  box-sizing: border-box;
+  padding: calc(var(--knob-border-width) / var(--knob-scale));
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 var(--knob-shadow);
+  outline: solid var(--outline-color);
+  outline-width: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' width='20px' height='20px' xmlns='http://www.w3.org/2000/svg'%3E%3CforeignObject width='100%25' height='100%25'%3E%3Cdiv class='c-o' xmlns='http://www.w3.org/1999/xhtml'%3E%3Cdiv class=\"c-i\"%3E%3C/div%3E%3C/div%3E%3Cstyle%3E.c-o,.c-i{position:absolute;left:0;top:0;right:0;bottom:0}.c-i{border-radius:50px;background:rgba(40,40,40,1)}%3C/style%3E%3C/foreignObject%3E%3C/svg%3E"), var(--knob-face-gradient), var(--knob-border-gradient);
+  background-size: var(--knob-tip-size) var(--knob-tip-size), 100% 100%, 100% 100%;
+  background-position: left 50% bottom 10%, 0 0, 0 0;
+  background-repeat: no-repeat;
+  background-clip: border-box, content-box, border-box;
+  background-origin: content-box, border-box, border-box;
+  transition-duration: 100ms, 50ms, var(--drag-duration);
+  transition-timing-function: ease-out, ease-out, var(--drag-timing-func);
+  pointer-events: auto;
+  cursor: var(--cur-drag);
+  left: var(--translate, 0);
+  top: var(--center, 0);
+  transform: rotate(calc(var(--start-angle, 0) * 1deg)) rotate(var(--current-angle, 0)) scale(var(--knob-scale));
+  -webkit-transition-property: box-shadow, outline, transform;
+  transition-property: box-shadow, outline, transform;
+}
+.knob::-moz-range-thumb {
+  width: calc(var(--knob-pseudo-size) * 1em);
+  height: calc(var(--knob-pseudo-size) * 1em);
+  box-sizing: border-box;
+  padding: calc(var(--knob-border-width) / var(--knob-scale));
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 var(--knob-shadow);
+  outline: solid var(--outline-color);
+  outline-width: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' width='20px' height='20px' xmlns='http://www.w3.org/2000/svg'%3E%3CforeignObject width='100%25' height='100%25'%3E%3Cdiv class='c-o' xmlns='http://www.w3.org/1999/xhtml'%3E%3Cdiv class=\"c-i\"%3E%3C/div%3E%3C/div%3E%3Cstyle%3E.c-o,.c-i{position:absolute;left:0;top:0;right:0;bottom:0}.c-i{border-radius:50px;background:rgba(40,40,40,1)}%3C/style%3E%3C/foreignObject%3E%3C/svg%3E"), var(--knob-face-gradient), var(--knob-border-gradient);
+  background-size: var(--knob-tip-size) var(--knob-tip-size), 100% 100%, 100% 100%;
+  background-position: left 50% bottom 10%, 0 0, 0 0;
+  background-repeat: no-repeat;
+  background-clip: border-box, content-box, border-box;
+  background-origin: content-box, border-box, border-box;
+  transition-duration: 100ms, 50ms, var(--drag-duration);
+  transition-timing-function: ease-out, ease-out, var(--drag-timing-func);
+  pointer-events: auto;
+  cursor: var(--cur-drag);
+  translate: var(--translate, 0) 0;
+  scale: var(--knob-scale);
+  rotate: calc(var(--start-angle, 0) * 1deg + var(--current-angle, 0));
+  -moz-transition-property: box-shadow, outline, rotate;
+  transition-property: box-shadow, outline, rotate;
+}
+.knob:hover::-moz-range-thumb {
+  box-shadow: 0 0 7em 0 var(--knob-shadow);
+}
+.knob:hover::-webkit-slider-thumb {
+  box-shadow: 0 0 7em 0 var(--knob-shadow);
+}
+.knob:active {
+  cursor: var(--cur-dragging);
+}
+.knob::-moz-range-thumb:active {
+  cursor: var(--cur-dragging);
+}
+.knob::-webkit-slider-thumb:active {
+  cursor: var(--cur-dragging);
+}
+.knob:focus-visible {
+  outline: none;
+}
+.knob:focus-visible::-moz-range-thumb {
+  outline-width: var(--outline-width);
+}
+.knob:focus-visible::-webkit-slider-thumb {
+  outline-width: var(--outline-width);
+}
+
+.piano-keys .black:nth-child(1n)::before,
+.piano-keys .black:nth-child(1n)::after {
+  animation-delay: 0.005s;
+}
+
+.piano-keys .black:nth-child(2n)::before,
+.piano-keys .black:nth-child(2n)::after {
+  animation-delay: 0.01s;
+}
+
+.piano-keys .black:nth-child(3n)::before,
+.piano-keys .black:nth-child(3n)::after {
+  animation-delay: 0.015s;
+}
+
+.piano-keys .black:nth-child(4n)::before,
+.piano-keys .black:nth-child(4n)::after {
+  animation-delay: 0.02s;
+}
+
+.piano-keys .black:nth-child(5n)::before,
+.piano-keys .black:nth-child(5n)::after {
+  animation-delay: 0.025s;
+}
+
+.piano-keys .black:nth-child(6n)::before,
+.piano-keys .black:nth-child(6n)::after {
+  animation-delay: 0.03s;
+}
+
+.piano-keys .black:nth-child(7n)::before,
+.piano-keys .black:nth-child(7n)::after {
+  animation-delay: 0.035s;
+}
+
+.piano-keys .black:nth-child(8n)::before,
+.piano-keys .black:nth-child(8n)::after {
+  animation-delay: 0.04s;
+}
+
+.piano-keys .black:nth-child(9n)::before,
+.piano-keys .black:nth-child(9n)::after {
+  animation-delay: 0.045s;
+}
+
+.piano-keys .black:nth-child(10n)::before,
+.piano-keys .black:nth-child(10n)::after {
+  animation-delay: 0.05s;
+}
+
+.piano-keys .black:nth-child(11n)::before,
+.piano-keys .black:nth-child(11n)::after {
+  animation-delay: 0.055s;
+}
+
+.piano-keys .black:nth-child(12n)::before,
+.piano-keys .black:nth-child(12n)::after {
+  animation-delay: 0.06s;
+}
+
+.piano-keys .black:nth-child(13n)::before,
+.piano-keys .black:nth-child(13n)::after {
+  animation-delay: 0.065s;
+}
+
+.piano-keys .black:nth-child(14n)::before,
+.piano-keys .black:nth-child(14n)::after {
+  animation-delay: 0.07s;
+}
+
+.piano-keys .black:nth-child(15n)::before,
+.piano-keys .black:nth-child(15n)::after {
+  animation-delay: 0.075s;
+}
+
+.piano-keys .black:nth-child(16n)::before,
+.piano-keys .black:nth-child(16n)::after {
+  animation-delay: 0.08s;
+}
+
+.piano-keys .black:nth-child(17n)::before,
+.piano-keys .black:nth-child(17n)::after {
+  animation-delay: 0.085s;
+}
+
+.piano-keys .black:nth-child(18n)::before,
+.piano-keys .black:nth-child(18n)::after {
+  animation-delay: 0.09s;
+}
+
+.piano-keys .black:nth-child(19n)::before,
+.piano-keys .black:nth-child(19n)::after {
+  animation-delay: 0.095s;
+}
+
+.piano-keys .black:nth-child(20n)::before,
+.piano-keys .black:nth-child(20n)::after {
+  animation-delay: 0.1s;
+}
+
+.piano-keys .black:nth-child(21n)::before,
+.piano-keys .black:nth-child(21n)::after {
+  animation-delay: 0.105s;
+}
+
+.piano-keys .black:nth-child(22n)::before,
+.piano-keys .black:nth-child(22n)::after {
+  animation-delay: 0.11s;
+}
+
+.piano-keys .black:nth-child(23n)::before,
+.piano-keys .black:nth-child(23n)::after {
+  animation-delay: 0.115s;
+}
+
+.piano-keys .black:nth-child(24n)::before,
+.piano-keys .black:nth-child(24n)::after {
+  animation-delay: 0.12s;
+}
+
+.piano-keys .black:nth-child(25n)::before,
+.piano-keys .black:nth-child(25n)::after {
+  animation-delay: 0.125s;
+}
+
+.piano-keys .black:nth-child(26n)::before,
+.piano-keys .black:nth-child(26n)::after {
+  animation-delay: 0.13s;
+}
+
+.piano-keys .black:nth-child(27n)::before,
+.piano-keys .black:nth-child(27n)::after {
+  animation-delay: 0.135s;
+}
+
+.piano-keys .black:nth-child(28n)::before,
+.piano-keys .black:nth-child(28n)::after {
+  animation-delay: 0.14s;
+}
+
+.piano-keys .black:nth-child(29n)::before,
+.piano-keys .black:nth-child(29n)::after {
+  animation-delay: 0.145s;
+}
+
+.piano-keys .black:nth-child(30n)::before,
+.piano-keys .black:nth-child(30n)::after {
+  animation-delay: 0.15s;
+}
+
+.piano-keys .black:nth-child(31n)::before,
+.piano-keys .black:nth-child(31n)::after {
+  animation-delay: 0.155s;
+}
+
+.piano-keys .black:nth-child(32n)::before,
+.piano-keys .black:nth-child(32n)::after {
+  animation-delay: 0.16s;
+}
+
+.piano-keys .black:nth-child(33n)::before,
+.piano-keys .black:nth-child(33n)::after {
+  animation-delay: 0.165s;
+}
+
+.piano-keys .black:nth-child(34n)::before,
+.piano-keys .black:nth-child(34n)::after {
+  animation-delay: 0.17s;
+}
+
+.piano-keys .black:nth-child(35n)::before,
+.piano-keys .black:nth-child(35n)::after {
+  animation-delay: 0.175s;
+}
+
+.piano-keys .black:nth-child(36n)::before,
+.piano-keys .black:nth-child(36n)::after {
+  animation-delay: 0.18s;
+}
+
+.piano-keys .black:nth-child(37n)::before,
+.piano-keys .black:nth-child(37n)::after {
+  animation-delay: 0.185s;
+}
+
+.piano-keys .black:nth-child(38n)::before,
+.piano-keys .black:nth-child(38n)::after {
+  animation-delay: 0.19s;
+}
+
+.piano-keys .black:nth-child(39n)::before,
+.piano-keys .black:nth-child(39n)::after {
+  animation-delay: 0.195s;
+}
+
+.piano-keys .black:nth-child(40n)::before,
+.piano-keys .black:nth-child(40n)::after {
+  animation-delay: 0.2s;
+}
+
+.piano-keys .black:nth-child(41n)::before,
+.piano-keys .black:nth-child(41n)::after {
+  animation-delay: 0.205s;
+}
+
+.piano-keys .black:nth-child(42n)::before,
+.piano-keys .black:nth-child(42n)::after {
+  animation-delay: 0.21s;
+}
+
+.piano-keys .black:nth-child(43n)::before,
+.piano-keys .black:nth-child(43n)::after {
+  animation-delay: 0.215s;
+}
+
+.piano-keys .black:nth-child(44n)::before,
+.piano-keys .black:nth-child(44n)::after {
+  animation-delay: 0.22s;
+}
+
+.piano-keys .black:nth-child(45n)::before,
+.piano-keys .black:nth-child(45n)::after {
+  animation-delay: 0.225s;
+}
+
+.piano-keys .black:nth-child(46n)::before,
+.piano-keys .black:nth-child(46n)::after {
+  animation-delay: 0.23s;
+}
+
+.piano-keys .black:nth-child(47n)::before,
+.piano-keys .black:nth-child(47n)::after {
+  animation-delay: 0.235s;
+}
+
+.piano-keys .black:nth-child(48n)::before,
+.piano-keys .black:nth-child(48n)::after {
+  animation-delay: 0.24s;
+}
+
+.piano-keys .black:nth-child(49n)::before,
+.piano-keys .black:nth-child(49n)::after {
+  animation-delay: 0.245s;
+}
+
+.piano-keys .black:nth-child(50n)::before,
+.piano-keys .black:nth-child(50n)::after {
+  animation-delay: 0.25s;
+}
+
+.effect-sections:nth-child(1n)::before,
+.effect-sections:nth-child(1n)::after {
+  animation-delay: 0.015s;
+}
+
+.effect-sections:nth-child(2n)::before,
+.effect-sections:nth-child(2n)::after {
+  animation-delay: 0.03s;
+}
+
+.effect-sections:nth-child(3n)::before,
+.effect-sections:nth-child(3n)::after {
+  animation-delay: 0.045s;
+}
+
+.effect-sections:nth-child(4n)::before,
+.effect-sections:nth-child(4n)::after {
+  animation-delay: 0.06s;
+}
+
+.effect-sections:nth-child(5n)::before,
+.effect-sections:nth-child(5n)::after {
+  animation-delay: 0.075s;
+}
+
+.effect-sections:nth-child(6n)::before,
+.effect-sections:nth-child(6n)::after {
+  animation-delay: 0.09s;
+}
+
+.effect-sections:nth-child(7n)::before,
+.effect-sections:nth-child(7n)::after {
+  animation-delay: 0.105s;
+}
+
+.effect-sections:nth-child(8n)::before,
+.effect-sections:nth-child(8n)::after {
+  animation-delay: 0.12s;
+}
+
+.effect-sections:nth-child(9n)::before,
+.effect-sections:nth-child(9n)::after {
+  animation-delay: 0.135s;
+}
+
+.effect-sections:nth-child(10n)::before,
+.effect-sections:nth-child(10n)::after {
+  animation-delay: 0.15s;
+}
+
+.effect-sections:nth-child(11n)::before,
+.effect-sections:nth-child(11n)::after {
+  animation-delay: 0.165s;
+}
+
+.effect-sections:nth-child(12n)::before,
+.effect-sections:nth-child(12n)::after {
+  animation-delay: 0.18s;
+}
+
+.effect-sections:nth-child(13n)::before,
+.effect-sections:nth-child(13n)::after {
+  animation-delay: 0.195s;
+}
+
+.effect-sections:nth-child(14n)::before,
+.effect-sections:nth-child(14n)::after {
+  animation-delay: 0.21s;
+}
+
+.effect-sections:nth-child(15n)::before,
+.effect-sections:nth-child(15n)::after {
+  animation-delay: 0.225s;
+}
+
+.effect-sections:nth-child(16n)::before,
+.effect-sections:nth-child(16n)::after {
+  animation-delay: 0.24s;
+}
+
+.effect-sections:nth-child(17n)::before,
+.effect-sections:nth-child(17n)::after {
+  animation-delay: 0.255s;
+}
+
+.effect-sections:nth-child(18n)::before,
+.effect-sections:nth-child(18n)::after {
+  animation-delay: 0.27s;
+}
+
+.effect-sections:nth-child(19n)::before,
+.effect-sections:nth-child(19n)::after {
+  animation-delay: 0.285s;
+}
+
+.effect-sections:nth-child(20n)::before,
+.effect-sections:nth-child(20n)::after {
+  animation-delay: 0.3s;
+}
+
+.effect-sections:nth-child(21n)::before,
+.effect-sections:nth-child(21n)::after {
+  animation-delay: 0.315s;
+}
+
+.effect-sections:nth-child(22n)::before,
+.effect-sections:nth-child(22n)::after {
+  animation-delay: 0.33s;
+}
+
+.effect-sections:nth-child(23n)::before,
+.effect-sections:nth-child(23n)::after {
+  animation-delay: 0.345s;
+}
+
+.effect-sections:nth-child(24n)::before,
+.effect-sections:nth-child(24n)::after {
+  animation-delay: 0.36s;
+}
+
+.effect-sections:nth-child(25n)::before,
+.effect-sections:nth-child(25n)::after {
+  animation-delay: 0.375s;
+}
+
+.effect-sections:nth-child(26n)::before,
+.effect-sections:nth-child(26n)::after {
+  animation-delay: 0.39s;
+}
+
+.effect-sections:nth-child(27n)::before,
+.effect-sections:nth-child(27n)::after {
+  animation-delay: 0.405s;
+}
+
+.effect-sections:nth-child(28n)::before,
+.effect-sections:nth-child(28n)::after {
+  animation-delay: 0.42s;
+}
+
+.effect-sections:nth-child(29n)::before,
+.effect-sections:nth-child(29n)::after {
+  animation-delay: 0.435s;
+}
+
+.effect-sections:nth-child(30n)::before,
+.effect-sections:nth-child(30n)::after {
+  animation-delay: 0.45s;
+}
+
+.effect-sections:nth-child(31n)::before,
+.effect-sections:nth-child(31n)::after {
+  animation-delay: 0.465s;
+}
+
+.effect-sections:nth-child(32n)::before,
+.effect-sections:nth-child(32n)::after {
+  animation-delay: 0.48s;
+}
+
+.effect-sections:nth-child(33n)::before,
+.effect-sections:nth-child(33n)::after {
+  animation-delay: 0.495s;
+}
+
+.effect-sections:nth-child(34n)::before,
+.effect-sections:nth-child(34n)::after {
+  animation-delay: 0.51s;
+}
+
+.effect-sections:nth-child(35n)::before,
+.effect-sections:nth-child(35n)::after {
+  animation-delay: 0.525s;
+}
+
+.effect-sections:nth-child(36n)::before,
+.effect-sections:nth-child(36n)::after {
+  animation-delay: 0.54s;
+}
+
+.effect-sections:nth-child(37n)::before,
+.effect-sections:nth-child(37n)::after {
+  animation-delay: 0.555s;
+}
+
+.effect-sections:nth-child(38n)::before,
+.effect-sections:nth-child(38n)::after {
+  animation-delay: 0.57s;
+}
+
+.effect-sections:nth-child(39n)::before,
+.effect-sections:nth-child(39n)::after {
+  animation-delay: 0.585s;
+}
+
+.effect-sections:nth-child(40n)::before,
+.effect-sections:nth-child(40n)::after {
+  animation-delay: 0.6s;
+}
+
+.effect-sections:nth-child(41n)::before,
+.effect-sections:nth-child(41n)::after {
+  animation-delay: 0.615s;
+}
+
+.effect-sections:nth-child(42n)::before,
+.effect-sections:nth-child(42n)::after {
+  animation-delay: 0.63s;
+}
+
+.effect-sections:nth-child(43n)::before,
+.effect-sections:nth-child(43n)::after {
+  animation-delay: 0.645s;
+}
+
+.effect-sections:nth-child(44n)::before,
+.effect-sections:nth-child(44n)::after {
+  animation-delay: 0.66s;
+}
+
+.effect-sections:nth-child(45n)::before,
+.effect-sections:nth-child(45n)::after {
+  animation-delay: 0.675s;
+}
+
+.effect-sections:nth-child(46n)::before,
+.effect-sections:nth-child(46n)::after {
+  animation-delay: 0.69s;
+}
+
+.effect-sections:nth-child(47n)::before,
+.effect-sections:nth-child(47n)::after {
+  animation-delay: 0.705s;
+}
+
+.effect-sections:nth-child(48n)::before,
+.effect-sections:nth-child(48n)::after {
+  animation-delay: 0.72s;
+}
+
+.effect-sections:nth-child(49n)::before,
+.effect-sections:nth-child(49n)::after {
+  animation-delay: 0.735s;
+}
+
+.effect-sections:nth-child(50n)::before,
+.effect-sections:nth-child(50n)::after {
+  animation-delay: 0.75s;
+}
+
+/*
+---------------------------------------------------------------------------------------------
+							Sequencer BPM range and volume
+---------------------------------------------------------------------------------------------
+*/
+#sequencer-range, #sequencer-volume {
+  height: 2.25em;
+  border-radius: 2.25em;
+  box-shadow: 0 -1px #eaeaea, 0 1px #fff;
+  background: linear-gradient(#e3e3e3, #f1f1f1);
+  cursor: grab;
+  padding: 0 3px 0;
+  width: 100%;
+}
+#sequencer-range, #sequencer-range::-webkit-slider-runnable-track, #sequencer-range::-webkit-slider-thumb, #sequencer-volume, #sequencer-volume::-webkit-slider-runnable-track, #sequencer-volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+#sequencer-range[list]::-webkit-slider-container, #sequencer-volume[list]::-webkit-slider-container {
+  min-height: 1.5em;
+}
+#sequencer-range::-webkit-slider-container, #sequencer-volume::-webkit-slider-container {
+  -webkit-user-modify: read-write !important;
+  margin: 0.375em;
+  height: 1.5em;
+  border-radius: 0.75em;
+  box-shadow: inset 0 1px 4px #8c8c8c;
+  background: linear-gradient(to bottom, #333333, #222222) 0/var(--pos) no-repeat, linear-gradient(#efefef, #e3e9e9);
+}
+#sequencer-range::-webkit-slider-runnable-track, #sequencer-volume::-webkit-slider-runnable-track {
+  margin: -0.375em;
+}
+#sequencer-range::-moz-range-track, #sequencer-volume::-moz-range-track {
+  margin: 0.375em;
+  height: 1.5em;
+  border-radius: 0.75em;
+  box-shadow: inset 0 1px 4px #8c8c8c;
+  background: linear-gradient(to bottom, #333333, #222222) 0/var(--pos) no-repeat, linear-gradient(#efefef, #e3e9e9);
+}
+#sequencer-range::-webkit-slider-runnable-track:active, #sequencer-volume::-webkit-slider-runnable-track:active {
+  cursor: grabbing;
+}
+#sequencer-range::-moz-range-track:active, #sequencer-volume::-moz-range-track:active {
+  cursor: grabbing;
+}
+#sequencer-range::-webkit-slider-thumb, #sequencer-volume::-webkit-slider-thumb {
+  box-sizing: border-box;
+  border: solid 0.375em transparent;
+  width: 2.25em;
+  height: 2.25em;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px #7d7d7d;
+  background: linear-gradient(#c5c5c5, whitesmoke) padding-box, linear-gradient(#fbfbfb, #c2c2c2) border-box;
+  cursor: grab;
+}
+#sequencer-range::-moz-range-thumb, #sequencer-volume::-moz-range-thumb {
+  box-sizing: border-box;
+  border: solid 0.375em transparent;
+  width: 2.25em;
+  height: 2.25em;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px #7d7d7d;
+  background: linear-gradient(#c5c5c5, whitesmoke) padding-box, linear-gradient(#fbfbfb, #c2c2c2) border-box;
+  cursor: grab;
+}
+#sequencer-range::-webkit-slider-thumb:active, #sequencer-volume::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+#sequencer-range::-moz-range-thumb:active, #sequencer-volume::-moz-range-thumb:active {
+  cursor: grabbing;
+}
+#sequencer-range:focus, #sequencer-volume:focus {
+  outline: none;
+}
+
+#sequencer-bpm-form, #sequencer-volume-form {
+  display: grid;
+  --k: calc((var(--val) - var(--min))/
+  		  (var(--max) - var(--min)));
+  --pos: calc(1.125em + var(--k)*(100% - 2.25em));
+  grid-gap: 0.25em;
+  place-self: center;
+  min-width: 8em;
+  margin-left: 20px;
+  width: calc(100% - 1.5em);
+  max-width: 29.5em;
+  filter: Saturate(var(--hl, 0));
+  transition: filter 0.3s ease-out;
+  overflow: visible;
+}
+#sequencer-bpm-form:focus-within, #sequencer-bpm-form:hover, #sequencer-volume-form:focus-within, #sequencer-volume-form:hover {
+  --hl: 1 ;
+}
+#sequencer-bpm-form:active, #sequencer-volume-form:active {
+  cursor: grabbing;
+}
+
+#sequencer-bpm-form {
+  max-width: 200px;
+  width: 100%;
+}
+
+#sequencer-volume-form {
+  max-width: 100px;
+  width: 100%;
+  transform: rotate(-90deg);
+  margin-top: 50px;
+  margin-right: 33px;
+}
+#sequencer-volume-form:focus-within option, #sequencer-volume-form:hover option {
+  color: #c73e61;
+}
+
+#volumeList {
+  display: grid;
+  grid-row: 1;
+  grid-template-columns: 3em 1fr 3em;
+  place-content: end center;
+  margin: 0 -0.375em;
+  color: #bababa;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+#volumeList option {
+  transform: rotate(-90deg);
+  color: #000;
+}
+#volumeList::after {
+  place-self: end center;
+  margin-bottom: 3px;
+  width: min(12em, 100%);
+  min-height: 0.5em;
+  grid-area: 1/2;
+  background: linear-gradient(90deg, transparent 2px, #c73e61 0) -1px/1em round;
+  -webkit-clip-path: polygon(0 calc(100% - 1px), 0 100%, 100% 100%, 100% 0);
+          clip-path: polygon(0 calc(100% - 1px), 0 100%, 100% 100%, 100% 0);
+  content: "";
+}
+
+/*-----------------------------------------------------------------------------------
+								Lock on Sequencer
+-----------------------------------------------------------------------------------*/
+.bling {
+  stroke: #000;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 3;
+  stroke-dashoffset: 15;
+  transition: all 0.3s ease;
+}
+
+.lock {
+  stroke: #000;
+  stroke-width: 4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 36;
+  transition: all 0.4s ease;
+}
+
+.lockb {
+  fill: #000;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  transform: rotate(8deg);
+  transform-origin: 14px 20px;
+  transition: all 0.2s ease;
+}
+
+.btn-lock {
+  position: absolute;
+  top: calc(10% - 32px);
+  left: calc(5% - 32px);
+  display: inline-block;
+  background: transparent;
+  width: 64px;
+  height: 64px;
+  box-sizing: border-box;
+  padding: 12px 0 0 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(0.75);
+}
+
+.btn-lock svg {
+  fill: none;
+  transform: translate3d(0, 0, 0);
+}
+
+#inputLock {
+  display: none;
+}
+
+/*
+#inputLock:checked + label {
+	background: transparent;
+}
+*/
+#inputLock:checked + label svg {
+  opacity: 1;
+}
+
+#inputLock:checked + label svg .bling {
+  animation: bling 0.3s linear forwards;
+  animation-delay: 0.2s;
+}
+
+#inputLock:checked + label svg .lock {
+  stroke-dasharray: 48;
+  animation: locked 0.3s linear forwards;
+}
+
+#inputLock:checked + label svg .lockb {
+  transform: rotate(0);
+  transform-origin: 14px 22px;
+}
+@keyframes bling {
+  50% {
+    stroke-dasharray: 3;
+    stroke-dashoffset: 12;
+  }
+  100% {
+    stroke-dasharray: 3;
+    stroke-dashoffset: 9;
+  }
+}
+@keyframes locked {
+  50% {
+    transform: translateY(1px);
+  }
+}
+.tooltip .tooltip {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltip {
+  visibility: visible;
+}/*# sourceMappingURL=style.css.map */
