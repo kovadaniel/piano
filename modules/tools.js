@@ -58,7 +58,7 @@ export const pianoParams = `{
         C8: "C8.mp3"
     },
     release: 10,
-    baseUrl: "./asset/audio/salamander/"
+    baseUrl: "https://tonejs.github.io/audio/salamander/"
 }`
 // synth that accept differect types of oscillators are place at the start.
 // and their amout is set by amountOfSaveSynth const.
