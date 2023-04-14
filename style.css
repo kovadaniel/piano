@@ -1,15 +1,16 @@
 /* Import Google font - Poppins */
-
+/*
 @font-face {
   font-family: FrederickatheGreat;
   src: url('./asset/fonts/FrederickatheGreat-Regular.ttf')  format('truetype');
 }
+*/
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'FrederickatheGreat', sans-serif;
+  font-family: 'Fredericka the Great', sans-serif;
 }
 body {
   display: flex;
