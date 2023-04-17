@@ -1,0 +1,1036 @@
+/* Import Google font - Poppins */
+
+/*
+@font-face {
+  font-family: FrederickatheGreat;
+  src: url('./asset/fonts/FrederickatheGreat-Regular.ttf')  format('truetype');
+}*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fredericka the Great', sans-serif;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: radial-gradient(black, white, black), url('./img/micro.webp');
+  background-blend-mode: difference;
+  background-size: 250px 250px;
+  /*background-position: 100px 100px;*/
+  /*background-image: linear-gradient(white, white),
+                     url("./img/piano.jpg");*/
+  /*background-blend-mode: exclusion;*/
+  
+}
+
+#container {
+  max-width: 850px;
+  padding: 35px 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background: rgba(14, 14, 14, 0.7);
+}
+
+/*----------------------------------------------------------------------------
+                        Synthesizers and Oscilltors Panel
+----------------------------------------------------------------------------*/
+.sound-choice-container, .oscillator-choice-container, .instrument-container {
+  height: auto;
+  width: 70%;
+  background: linear-gradient(#eee, #fff 98%, #eee 2%);
+  box-shadow: 0px 1px 5px 3px #1f1e1e80;
+  border-radius: 5px;
+  margin: 0 0 20px;
+  text-align: center;
+  padding: 15px;
+}
+
+.sound-choice-container{
+  max-width: 400px
+}
+  
+.oscillator-choice-container{
+  max-width: 200px;
+}
+
+
+.sounds-label, .effects-label, .oscillator-label, 
+.sequencer-label, .instruments-label {
+  color: #c73e61;
+  margin: 0 auto;
+}
+
+.sound-type>div, .oscillator-type>button{
+  font-size: inherit;
+  border: 0;
+  background: transparent;
+  margin: auto;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.sound-type>div:hover, .oscillator-type>button:hover {
+  cursor: pointer;
+}
+.sound-type>div:focus, .oscillator-type>button:focus {
+  outline: 0px;
+}
+.sound-type>div:active:enabled, .oscillator-type>button:active:enabled {
+  color: crimson;
+}
+
+.sound-type>div.active, .oscillator-type>button.active{
+  color: crimson;
+}
+
+.sound-type, .oscillator-type {
+  display: flex;
+  flex-flow: row wrap;
+  font-size: 10px;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* here are all modifications over the keyboard: synths, oscillators, effect */
+.effects-board{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+/*---------------------------------------------------------------------
+                                EFFECTS
+---------------------------------------------------------------------*/
+
+.effects-choice-container, .sequencer-container {
+  position: relative;
+  height: auto;
+  width: 100%;
+  background: linear-gradient(#eee, #fff 99.2%, #eee .8%);
+  box-shadow: 0px 1px 5px 3px #1f1e1e80;
+  border-radius: 5px;
+  margin: 0 auto 20px;
+  text-align: center;
+  padding: 15px;
+}
+
+.effects-choice-container h4{
+  font-size: 10px;
+}
+
+.effect-type{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  margin-top: 15px;
+
+  margin: 10px auto 0;
+  /*max-width: 80%;*/
+  overflow: hidden;
+}
+
+.effect-type i.active{
+  color: crimson;
+}
+
+.effect-sections{
+  position: relative;
+  display: block;
+  font-size: 10px;
+  /*height: 90px;*/
+
+  /*width: 85px;*/
+  border: solid #000 0px;
+  margin: 0px 5px 10px;
+  padding-top: 5px;
+  /*box-shadow: 0px 1px 5px 3px #1f1e1e80;*/
+  border-radius: 5px;
+
+  overflow: hidden;
+}
+
+.effect-sections .slider-container{
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.turn-effect-container:hover{
+  cursor: pointer;
+}
+
+.slider-container section{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /*width: 27px;*/
+  /*margin-top: 40px;*/
+  padding-bottom: 10px;
+
+
+}
+
+.slider-container section .before{
+  position: absolute;
+  top: 65%;
+  left: 20%;
+  
+}
+
+.slider-container section .after{
+  position: absolute;
+  top: 65%;
+  left: 75%;
+}
+
+.slider-container section .knob{
+    /* their ratio is between 1.77666666 and 1.77666667*/
+    --size: 60; /*533;*/
+    --knob-size: 33.77; /*300;*/
+    --knob-pseudo-size: 33; /*100;*/
+    font-size: 1.5px;
+
+}
+
+.slider-container section .knob:hover{
+  cursor: ew-resize;
+}
+
+/*-----------------------------------------------------------
+                        Sequencer
+-----------------------------------------------------------*/
+
+.sequencer-container{
+  margin-left: 0;
+  max-width: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.sequencer-main{
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  /*flex-direction: row;
+  flex-wrap: wrap;*/
+
+  width: 100%;
+}
+
+.sequencer-footer{
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding-bottom: 10px;
+}
+
+.note-select-container{
+  position: relative;
+  min-height: 32px;
+
+  margin: 1px;
+}
+
+.note-select-container .next-note{
+  position: absolute;
+  left: 0;
+  top: 3px;
+}
+
+.note-select-container .prev-note{
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+}
+.note-select{
+  margin-left: 15px;
+  height: 100%;
+
+  border-radius: 3px;
+  border: 1px solid black;
+}
+
+.sequencer{
+  max-width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sequencer-buttons{
+  max-width: 100%;
+  display: flex;
+  justify-content: start;
+  overflow-x: auto;
+}
+
+/* style for currently playing columns*/
+.sequencer-buttons > .active > .cell{
+  box-shadow: 0px 0px 6px #c73e61;
+}
+
+.cell-column{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+  position: relative;
+  padding-top: 8px;
+
+  /*height: 180px;*/
+}
+
+.cell{
+  display: inline-block;
+  min-width: 32px;
+  min-height: 32px;
+
+  margin: 1px 1px;
+  background-size: 120% 120%;
+  border-radius: 3px;
+  background-color: #fff;
+
+}
+.cell-column .active{
+  /*background-image: url('./img/Scribble-transparent.png');
+  background-image: url(./img/Black-Scribble.png) ;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 120% 120%;
+  */
+  background: linear-gradient(to right, #333333, #222222);
+}
+.cell-column .active:active{
+  background: linear-gradient(to left, #333333, #222222);
+}
+
+.add-column{ 
+  margin-left: 5px;
+  width: 20px;
+  margin-bottom: 25px;
+}
+.add-row{
+  margin-top: 5px;
+  width: 100%;
+}
+
+.add-column, .add-row{
+  border: 0;
+  border-radius: 10px;
+
+  font-size: 35px;
+  color: #c73e61;
+  line-height: 20px;
+}
+.add-column:hover, .add-row:hover{
+  cursor: pointer;
+  color: red;
+}
+
+.add-column{
+  background: linear-gradient(to left, #eee, #fff);
+}
+.add-row{
+  background: linear-gradient(to top, #eee, #fff);
+}
+.add-column:hover{
+  background: linear-gradient(to left, #f2f2f2, #ffffff);
+}
+.add-row:hover{
+  background: linear-gradient(to top, #f2f2f2, #ffffff);
+}
+.add-column:active{
+  background: linear-gradient(to right, #eee, #ddd);
+}
+.add-row:active{
+  background: linear-gradient(to bottom, #eee, #ddd);
+}
+
+.remove-column{
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: -2px;
+
+  opacity: 0;
+  background-color: transparent;
+  border: 0px;
+  font-size: 10px;
+  color: #c73e61;
+}
+.remove-column:hover{
+  cursor: pointer;
+}
+.remove-column:active{
+  color: red;
+}
+.cell-column:last-child:hover .remove-column{
+  opacity: 1;
+  transition: opacity ease .7s;
+}
+
+.bmp-label{
+  display: inline-flex;
+  margin-left: 20px;
+  align-items: center;
+
+  max-width: 90px;
+  width: 100%;
+
+}
+
+.sequencer-button{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 5px;
+
+  border-radius: 6px;
+  border: 0px solid black;
+  color: #fff;
+  /*background-color: #A2A2A2;*/
+  background: linear-gradient(to right, #333333, #222222);
+}
+
+.sequencer-button:active{
+  /*background-color: grey;*/
+  background: linear-gradient(to left, #333333, #222222);
+  color: #eee;
+}
+
+.sequencer-button i:active{
+  color: #d8d8d8;
+}
+
+.waiter:hover{
+  /*cursor for occasions when we have to wait for some files to be loaded*/
+  cursor: wait !important;
+}
+
+
+
+/*----------------------------------------------------------
+                        Piano-Keys
+/*--------------------------------------------------------*/
+.piano-keys {
+  max-width: 700px;
+  display: flex;
+  list-style: none;
+  margin: 40px auto 0;
+}
+
+.piano-keys .key.disabled{
+  display: none;
+}
+.piano-keys .key {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  text-transform: uppercase;
+
+  overflow: hidden; /* for correct shine animation */
+}
+.piano-keys .black {
+  z-index: 2;
+  width: 44px; /* 44px */
+  height: 170px; /* 140 px*/
+  margin: 0 -22px 0 -22px;
+  border-radius: 0 0 3px 3px;
+  /*background: linear-gradient(#222, #000);*/
+  background: linear-gradient(to bottom, #222, #111 97%, #000 97%, #000);
+
+}
+/*.piano-keys .black.active {
+  box-shadow: inset -5px -10px 10px rgba(255,255,255,0.1);
+  background:linear-gradient(to bottom, #000, #333333); /* last: #434343 *
+} */
+.piano-keys .black.active{
+  box-shadow: inset -5px -10px 10px rgba(255,255,255,0.1);
+  background:linear-gradient(to bottom, #000, #333333); /* last: #434343*/
+}
+
+.piano-keys .white {
+  height: 290px; /* 230px */
+  width: 70px; /* 70px */
+  border-radius: 4px;
+  border: 1px solid #000;
+  background: linear-gradient(#fff 98%, #eee 2%);
+}
+.piano-keys .white.active {
+  box-shadow: inset -5px 5px 20px rgba(0,0,0,0.2);
+  background:linear-gradient(to bottom, #fff 0%, #eee 100%);
+}
+.piano-keys .key span {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  color: #A2A2A2;
+  font-size: 1.13rem;
+  text-align: center;
+}
+.piano-keys .key.hide span {
+  display: none;
+}
+.piano-keys .black span {
+  bottom: 13px;
+  color: #888888;
+}
+
+/*-------------------
+  full keyboard mode
+-------------------*/
+
+#full-mode-piano{
+  max-width: 200%;
+  margin-left: -30px;
+  margin-right: -30px;
+
+}
+
+#full-mode-piano .black{
+  width: 14.7px;/*11px; /* 44px */
+  height: 56.7px; /* 42.5px; /* 170 px*/
+  border-radius: 0 0 1px 1px;
+  margin: 0 -5.3px 0 -5.3px;
+}
+
+#full-mode-piano .white{
+  height: 96.7px; /* 72.5px; /* 290px */
+  width: 23.3px; /* 17.5px; /* 70px */
+  border-radius: 1px;
+  border: .5px solid #000;
+
+}
+
+#full-mode-piano .key span {
+  bottom: 6.7px;/* 5px; /* 20px */
+  font-size: .5rem; /* 1.13rem */
+}
+
+#full-mode-piano .black span {
+  bottom: 4.3px; /* 3.25px; /* 13px */
+}
+
+
+
+
+
+/*----------------------------------------------------------------
+                            Shine animation
+----------------------------------------------------------------*/
+
+/* psuedo-element shine animation left side*/
+.black::before , .effect-sections::before, #sequencer-range::before {
+  content: '';
+  display: block;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  width: 60px;
+  height: 100%;
+  top: 0;
+  filter: blur(30px);
+  transform: translateX(-150px) skewX(-15deg);
+  animation: TransitioningBackground 5s ease ease;
+}
+
+/*psuedo-element shine animation right side*/
+.black::after, .effect-sections::after, #sequencer-range::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  width: 30px;
+  height: 100%;
+  top: 0;
+  filter: blur(5px);
+  transform: translateX(-150px) skewX(-15deg);
+  animation: TransitioningBackground 5s ease infinite;
+}
+
+/* additional seting for a long horizontal string of bpm range*/
+#sequencer-range::after{
+  right: 0;
+}
+
+@keyframes TransitioningBackground {
+  5% {
+    transform: translateX(300px) skewX(-10deg);
+    transition: 0.7s;
+  }
+  100% {
+    transform: translateX(300px) skewX(-10deg);
+    transition: 0.7s;
+  }
+}
+
+/*------------------------------------------------------------------------
+                            RECORDER
+------------------------------------------------------------------------*/
+.recorder-container {
+  width: 35px;
+  background: linear-gradient(to right, #333333, #222222);
+  display: block;
+  /*margin: 50px auto 0px auto;*/
+  border-radius: 100%;
+  box-shadow: 0px;
+  cursor: default;
+  transition: .3s all ease-in;
+  transition: 0s border-radius;
+
+  position: relative;
+  bottom: 2.5px;
+}
+
+.recorder-container .icon-microphone {
+  color: #fff;
+  font-size: 15px;
+  line-height: 35px;
+  display: block;
+  text-align: center;
+  transition: .1s all ease-in;
+  position: relative;
+  z-index: 1;
+}
+.recorder-container .icon-microphone:hover{
+  cursor: pointer;
+}
+
+.recorder-container .outer.active {
+  width: 35px;
+  height: 35px;
+  transform: scale(1);
+  border-radius: 100%;
+  position: absolute;
+  background-color: transparent;
+  border: 1px solid #c73e61;/*#7f8c8d;*/
+  transition: 1.5s all ease;
+  transition: 0s border-radius;
+
+  animation: woong 1.5s infinite;
+}
+
+.recorder-container .outer-2.active {
+  width: 35px;
+  height: 35px;
+  transform: scale(1);
+  border-radius: 100%;
+  position: absolute;
+  background-color: #c73e61;/*#bdc3c7;*/
+  transition: 1.5s all ease;
+  transition: 0s border-radius;
+
+  animation: woong-2 1.5s infinite;
+  animation-delay: 1s;
+}
+
+.recorder-container.active{
+  box-shadow: 0px 0px 15px 2px #c73e61;/*#bdc3c7;*/
+  background: #c73e61;
+}
+
+.download-recorded, .waiter{
+  background: rgba(19, 1, 1, 0.3);
+}
+
+.download-recorded:active, .waiter:hover{
+  background: rgba(19, 1, 1, 0.3);
+}
+
+/* when download button is not yet availible, but pressed*/
+.download-recorded:hover, .waiter:hover{
+  cursor: default;
+}
+.download-recorded:active, .waiter:hover{
+  color: #fff;
+}
+.download-recorded i:active, .waiter:hover{
+  color: #fff;
+}
+
+/* end */
+
+/* when download button is already availible and pressed*/
+.download-recorded.active:hover{
+  cursor: pointer;
+}
+.download-recorded.active{
+  background: linear-gradient(to right, #333333, #222222);
+}
+.download-recorded.active:active{
+  background: linear-gradient(to left, #333333, #222222);
+}
+.download-recorded.active:active i{
+  color: #d8d8d8;
+}
+.download-recorded.active i:active{
+  color: #d8d8d8;
+}
+/* end */
+
+@keyframes woong {
+  0% {
+    trasform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes woong-2 {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/*----------------------------------------------------------
+                        Instrument panel
+/*--------------------------------------------------------*/
+
+.instrument-container{
+  position: relative;
+  overflow: hidden;
+  max-width: 8.5%;
+  width: 100%;
+  padding: 15px 5px 0;
+}
+
+.instruments-main{
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center;*/
+
+  margin-top: 15px;
+}
+
+.recorder-container, .download-recorded{
+  margin: 5px auto 0;
+}
+
+/*--------------------------
+Show-full-keyboard button 
+--------------------------*/
+#onoff {
+  display: none;
+
+}
+
+.round{
+  position: absolute;
+  bottom: 0;
+
+  transform: scale(.6) rotate(-90deg);
+  margin-top: 20px;
+}
+
+.on,.off {
+  position: absolute;
+  text-align: center;
+  text-shadow: inset 1px 1px 1px black;
+  width: 100%;
+}
+
+.on {
+  color: #fff;
+  top: 10px;
+  transition: all 0.1s;
+  font-family: sans-serif
+}
+
+.off {
+  color: #636161;
+  bottom: 5px;
+  transition: all 0.1s;
+  transform: scaleY(0.85);
+}
+
+.but {
+  background-color: #000;
+  border-radius: 400px 400px 400px 400px / 400px 400px 300px 300px;
+  border-bottom-width: 0px;
+  box-shadow: inset 8px 6px 5px -7px rgba(0,0,0,1)
+    ,inset -8px 6px 5px -7px rgba(0,0,0,1)
+    ,inset 0 -3px 2px -2px rgba(200,200,200,.5)
+    ,0 3px 3px -2px rgba(0,0,0,1)
+    ,inset 0 -230px 60px -200px rgba(255,255,255,.2)
+    ,inset 0 220px 40px -200px rgba(0,0,0,.3);
+
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+  height: 60px;
+  position: relative;
+  transition: all 0.2s;
+  width: 40px;
+}
+
+.back {
+  background-color: #000;
+  background-image: -webkit-linear-gradient(0deg, transparent 30%, transparent 65%)
+    ,-webkit-linear-gradient(0deg, rgba(245, 245, 245, 0) 30%, rgba(150,150,150,.1) 50%, rgba(150,150,150,0) 70%);
+  border-radius: 115px;
+  box-sizing: border-box;
+  height: 85px;
+  padding: 4px 4px;
+  transition: all 0.2s;
+  width: 50px;
+}
+
+#onoff:checked + .back .on,.show-full-keyboard:checked + .back .off {
+  text-shadow: inset 1px 1px 1px black;
+}
+
+#onoff:checked + .back .on {
+  color: rgb(141, 141, 141);
+  top: 10px;
+  transform: scaleY(0.85);
+}
+
+#onoff:checked + .back .off {
+  color: #fff;
+  bottom: 5px;
+  transform: scaleY(1);
+}
+
+#onoff:checked + .back .but {
+  background: #232323;
+  background-image: -webkit-radial-gradient(55% 18%,circle closest-corner,rgba(0,0,0,.3) ,rgba(0,0,0,0));
+  border-radius: 410px 410px 410px 410px / 310px 310px 410px 410px;
+  box-shadow: inset 8px -4px 5px -7px rgba(0,0,0,1)
+    ,inset -8px -4px 5px -7px rgba(0,0,0,1)
+    , 0 -3px 8px -4px rgba(250,250,250,.4)
+    ,inset 0 3px 4px -2px rgba(10,10,10,1)
+    ,inset 0 280px 40px -200px rgba(0,0,0,.2)
+    ,inset 0 -200px 40px -200px rgba(180,180,180,.2);
+  margin-top: 20px;
+}
+
+#onoff:checked + .back {
+  background-image: -webkit-linear-gradient(90deg, black 30%, transparent 65%)
+    ,-webkit-linear-gradient(180deg, rgba(250,250,250,0) 0%, rgba(250,250,250,.4) 50%, rgba(150,150,150,0) 100%);
+  box-shadow: 28px 28px 28px -28px rgba(0,0,0,.1)
+    ,-28px 28px 28px -22px rgba(0,0,0,.1)
+    ,0 30px 30px 0px rgba(0,0,0,.2)
+    ,inset 0 1px 2px 0 rgba(0,0,0,.6);
+  padding: 2px 4px;
+}
+
+.l,.r {
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+
+
+/*----------------------------------------------------------------------
+                        Size adoptaion
+----------------------------------------------------------------------*/
+@media screen and (max-width: 815px) {
+  .container {
+    padding: 25px;
+  }
+  header {
+    flex-direction: column;
+  }
+  header :where(h2, .column) {
+    margin-bottom: 13px;
+  }
+  .volume-slider input {
+    max-width: 100px;
+  }
+  .piano-keys {
+    max-width: 540px;
+    margin-top: 20px;
+  }
+  
+  .piano-keys .key:where(:nth-child(9), :nth-child(10)) {
+    display: none;
+  }
+  .piano-keys .black {
+    height: 145px; /* 100px */
+    width: 40px; /* 40px */
+    margin: 0 -20px 0 -20px;
+  }
+  .piano-keys .white {
+    height: 250px; /* 180px */
+    width: 60px; /* 60px */
+  }
+}
+@media screen and (max-width: 800px) {
+  #container{
+    max-width: 720px;
+    width: auto;
+  }
+
+  .round .back{
+    margin-left: -7px;
+  }
+
+  #sequencer-bpm-form, #sequencer-volume-form{
+    max-width: 100px !important;
+    margin-left: 10px !important;
+  }
+}
+@media screen and (max-width: 615px) {
+  /*
+  .piano-keys .key:nth-child(13),
+  .piano-keys .key:nth-child(14),
+  .piano-keys .key:nth-child(15),
+  .piano-keys .key:nth-child(16),
+  .piano-keys .key :nth-child(17) {
+    display: none;
+  }*/
+
+  .piano-keys .white {
+    height: 240px;
+    width: 50px; /*50px*/
+  }
+
+  #container{
+    max-width: 530px;
+    width: auto;
+  }
+
+  #container .effect-board{
+    flex-direction: column;
+  }
+
+  #container .effect-type{
+    justify-content: center;
+  }
+
+  .sound-choice-container, .oscillator-choice-container, 
+  .instrument-container, .sequencer-container {
+    width: 100%;
+    max-width: 100%;
+    
+    padding: 10px 5px 10px;
+  }
+
+  .sequencer-container{
+    padding-right: 18px;
+  }
+
+
+
+  .instrument-container .instruments-main{
+    flex-direction: row;
+    justify-content: center;
+
+    max-height: 35px;
+    margin-top: 10px;
+  }
+
+  .instruments-main div, .instruments-main a{
+    margin: 0;
+  }
+
+  .instruments-main a{
+    margin-left: 15px;
+  }
+
+  .instruments-main .round{
+    position: relative;
+    bottom: auto;
+    margin: 0 0 5px;
+  }
+
+  .bmp-label{
+    font-size: 14px;
+    max-width: 70px;
+    margin-left: 5px;
+  }
+
+  /*------------piano-----------*/
+
+  .piano-keys .black{
+    margin: 0 -18px 0 -18px;
+  }
+
+  
+  #full-mode-piano .black{
+    margin: 0 -3.5px 0 -3.5px;
+  }
+
+  #full-mode-piano .key{
+    border-right: solid 0;
+    border-left: solid 0.1px;
+  } 
+
+
+
+/*
+  #full-mode-piano{
+    max-width: 200%;
+    margin-left: -30px;
+    margin-right: -30px;
+  }
+  
+  #full-mode-piano .black{
+    width: 14.7px;/ *11px; /* 44px * /
+    height: 56.7px; /* 42.5px; /* 170 px* /
+    border-radius: 0 0 1px 1px;
+    margin: 0 -5.3px 0 -5.3px;
+  }
+  
+  #full-mode-piano .white{
+    height: 96.7px; /* 72.5px; /* 290px * /
+    width: 23.3px; /* 17.5px; /* 70px * /
+    border-radius: 1px;
+    border: .5px solid #000;
+  
+  }
+  
+  #full-mode-piano .key span {
+    bottom: 6.7px;/* 5px; /* 20px * /
+    font-size: .5rem; /* 1.13rem * /
+  }
+  
+  #full-mode-piano .black span {
+    bottom: 4.3px; /* 3.25px; /* 13px * /
+  }
+  */
+}
+
+@media screen and (max-width: 480px) {
+  #container{
+    max-width: 470px;
+    width: auto;
+  }
+
+  #container .effect-board{
+    flex-direction: column;
+    /*flex-flow:*/
+  }
+
+}
